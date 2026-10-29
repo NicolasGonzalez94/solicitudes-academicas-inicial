@@ -78,9 +78,7 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         try {
             List<Estudiante> estudiantes = em.createQuery("from Estudiante", Estudiante.class).getResultList();
-            for (Estudiante e : estudiantes) {
-                System.out.println(e.id + " - " + e.nombre);
-            }
+            estudiantes.forEach(System.out::println);
             Long idEstudiante = Long.parseLong(leer("ID estudiante: "));
             String tipo = leer("Tipo (CERTIFICADO/EQUIVALENCIA/BAJA_MATERIA/OTRO): ").toUpperCase();
             String prioridad = leer("Prioridad (BAJA/MEDIA/ALTA): ").toUpperCase();
@@ -94,7 +92,7 @@ public class Main {
             Solicitud solicitud = crearSolicitud(estudiante, tipo, prioridad, descripcion, "PENDIENTE", null);
             em.persist(solicitud);
             em.getTransaction().commit();
-            System.out.println("Solicitud registrada: " + formatear(solicitud));
+            System.out.println("Solicitud registrada: " + solicitud);
         } finally {
             cerrar(em);
         }
@@ -128,9 +126,7 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         try {
             List<Responsable> responsables = em.createQuery("from Responsable", Responsable.class).getResultList();
-            for (Responsable r : responsables) {
-                System.out.println(r.id + " - " + r.nombre + " (" + r.area + ")");
-            }
+            responsables.forEach(System.out::println);
             Long idSolicitud = Long.parseLong(leer("ID solicitud: "));
             Long idResponsable = Long.parseLong(leer("ID responsable: "));
 
@@ -160,9 +156,7 @@ public class Main {
         try {
             List<Solicitud> solicitudes = em.createQuery(jpql, Solicitud.class).getResultList();
             if (solicitudes.isEmpty()) System.out.println("Sin resultados.");
-            for (Solicitud solicitud : solicitudes) {
-                System.out.println(formatear(solicitud));
-            }
+            solicitudes.forEach(System.out::println);
         } finally {
             cerrar(em);
         }
@@ -204,18 +198,5 @@ public class Main {
         s.estado = estado;
         s.responsable = responsable;
         return s;
-    }
-
-    static String formatear(Solicitud s) {
-        String r;
-        if (s.responsable == null) {
-            r = "sin asignar";
-        } else {
-            r = s.responsable.nombre;
-        }
-        return "#" + s.id + " | " + s.tipo + " | " + s.prioridad + " | " + s.estado
-                + " | " + s.estudiante.nombre
-                + " | Resp: " + r
-                + " | " + s.descripcion;
     }
 }
