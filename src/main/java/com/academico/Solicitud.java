@@ -18,9 +18,16 @@ public class Solicitud {
     public String tipo;       // CERTIFICADO, EQUIVALENCIA, BAJA_MATERIA, OTRO
     public String prioridad;  // BAJA, MEDIA, ALTA
     public String descripcion;
-    public String estado;     // PENDIENTE, EN_PROCESO, RESUELTA, RECHAZADA
+    public String estado = "PENDIENTE";     // PENDIENTE, EN_PROCESO, RESUELTA, RECHAZADA
 
     public Solicitud() {}
+
+    public Solicitud(Estudiante estudiante, String tipo, String prioridad, String descripcion) {
+        this.estudiante = estudiante;
+        this.tipo = tipo;
+        this.prioridad = prioridad;
+        this.descripcion = descripcion;
+    }
 
     @Override
     public String toString() {
