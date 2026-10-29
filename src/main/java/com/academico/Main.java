@@ -149,12 +149,16 @@ public class Main {
         String tipo = leer("Tipo (Enter = todos): ").toUpperCase();
 
         String jpql = "from Solicitud s where 1=1";
-        if (!estado.isEmpty()) jpql = jpql + " and s.estado = '" + estado + "'";
-        if (!tipo.isEmpty()) jpql = jpql + " and s.tipo = '" + tipo + "'";
+        if (!estado.isEmpty()) jpql += " and s.estado = :estado";
+        if (!tipo.isEmpty()) jpql += " and s.tipo = :tipo";
 
         EntityManager em = emf.createEntityManager();
         try {
-            List<Solicitud> solicitudes = em.createQuery(jpql, Solicitud.class).getResultList();
+            TypedQuery<Solicitud> query = em.createQuery(jpql, Solicitud.class);
+            if (!estado.isEmpty()) query.setParameter("estado", estado);
+            if (!tipo.isEmpty()) query.setParameter("tipo", tipo);
+
+            List<Solicitud> solicitudes = query.getResultList();
             if (solicitudes.isEmpty()) System.out.println("Sin resultados.");
             solicitudes.forEach(System.out::println);
         } finally {
