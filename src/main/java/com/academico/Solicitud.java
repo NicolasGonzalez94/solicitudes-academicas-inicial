@@ -7,19 +7,20 @@ public class Solicitud {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @ManyToOne
-    public Estudiante estudiante;
+    private Estudiante estudiante;
 
     @ManyToOne
-    public Responsable responsable; // null hasta que se asigna
+    private Responsable responsable; // null hasta que se asigna
 
-    public String tipo;       // CERTIFICADO, EQUIVALENCIA, BAJA_MATERIA, OTRO
-    public String prioridad;  // BAJA, MEDIA, ALTA
-    public String descripcion;
+    private String tipo;       // CERTIFICADO, EQUIVALENCIA, BAJA_MATERIA, OTRO
+    private String prioridad;  // BAJA, MEDIA, ALTA
+    private String descripcion;
+
     @Enumerated(EnumType.STRING)
-    public Estado estado = Estado.PENDIENTE;
+    private Estado estado = Estado.PENDIENTE;
 
     public Solicitud() {}
 
@@ -30,16 +31,20 @@ public class Solicitud {
         this.descripcion = descripcion;
     }
 
+    public Long getId() { return id; }
+    public void setResponsable(Responsable responsable) { this.responsable = responsable; }
+    public void setEstado(Estado estado) { this.estado = estado; }
+
     @Override
     public String toString() {
         String nombreResponsable;
         if (responsable == null) {
             nombreResponsable = "sin asignar";
         } else {
-            nombreResponsable = responsable.nombre;
+            nombreResponsable = responsable.getNombre();
         }
         return "#" + id + " | " + tipo + " | " + prioridad + " | " + estado
-                + " | " + estudiante.nombre
+                + " | " + estudiante.getNombre()
                 + " | Resp: " + nombreResponsable
                 + " | " + descripcion;
     }
