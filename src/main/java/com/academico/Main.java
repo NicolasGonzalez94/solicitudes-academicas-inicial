@@ -63,7 +63,7 @@ public class Main {
                         System.out.println("Solicitud registrada: " + formatear(s));
                     } else {
                         em.getTransaction().rollback();
-                        throw new RuntimeException("Error");
+                        throw new IllegalArgumentException("No existe ese estudiante");
                     }
                 } else if (x == 2) {
                     System.out.print("ID solicitud: ");
@@ -78,10 +78,11 @@ public class Main {
                             em.getTransaction().commit();
                             System.out.println("Estado actualizado.");
                         } else {
-                            throw new RuntimeException("Error");
+                            em.getTransaction().rollback();
+                            throw new IllegalArgumentException("No existe esa solicitud");
                         }
                     } else {
-                        throw new RuntimeException("Error");
+                        throw new IllegalArgumentException("Estado inválido: " + b);
                     }
                 } else if (x == 3) {
                     List<Responsable> rs = em.createQuery("from Responsable", Responsable.class).getResultList();
@@ -101,7 +102,8 @@ public class Main {
                         em.getTransaction().commit();
                         System.out.println("Responsable asignado.");
                     } else {
-                        throw new RuntimeException("Error");
+                        em.getTransaction().rollback();
+                        throw new IllegalArgumentException("Solicitud o responsable inexistente");
                     }
                 } else if (x == 4) {
                     System.out.print("Estado (Enter = todos): ");
@@ -139,7 +141,7 @@ public class Main {
                     }
                 }
             } catch (Exception ex) {
-                System.out.println("Error");
+                System.out.println("Error: " + ex.getMessage());
             }
         } while (x != 0);
     }

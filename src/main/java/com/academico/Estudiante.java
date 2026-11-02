@@ -15,4 +15,3 @@ public class Estudiante {
     public Estudiante(String n) {
         nombre = n;
     }
-}
