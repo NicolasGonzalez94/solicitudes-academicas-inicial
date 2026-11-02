@@ -89,7 +89,7 @@ public class Main {
             if (estudiante == null) {
                 throw new IllegalArgumentException("No existe ese estudiante");
             }
-            Solicitud solicitud = crearSolicitud(estudiante, tipo, prioridad, descripcion, "PENDIENTE", null);
+            Solicitud solicitud = new Solicitud(estudiante, tipo, prioridad, descripcion);
             em.persist(solicitud);
             em.getTransaction().commit();
             System.out.println("Solicitud registrada: " + solicitud);
@@ -186,17 +186,5 @@ public class Main {
         } finally {
             cerrar(em);
         }
-    }
-
-    static Solicitud crearSolicitud(Estudiante estudiante, String tipo, String prioridad, String descripcion,
-                                    String estado, Responsable responsable) {
-        Solicitud s = new Solicitud();
-        s.estudiante = estudiante;
-        s.tipo = tipo;
-        s.prioridad = prioridad;
-        s.descripcion = descripcion;
-        s.estado = estado;
-        s.responsable = responsable;
-        return s;
     }
 }
