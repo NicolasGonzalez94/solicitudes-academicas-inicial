@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static EntityManagerFactory emf = Persistence.createEntityManagerFactory("solicitudesPU");
-    public static Scanner in = new Scanner(System.in);
+    static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("solicitudesPU");
+    static final Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) throws SQLException, InterruptedException {
 
