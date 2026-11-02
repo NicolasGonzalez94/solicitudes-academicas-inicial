@@ -100,12 +100,7 @@ public class Main {
 
     static void cambiarEstado() {
         Long idSolicitud = Long.parseLong(leer("ID solicitud: "));
-        String nuevoEstado = leer("Nuevo estado (PENDIENTE/EN_PROCESO/RESUELTA/RECHAZADA): ").toUpperCase();
-        boolean estadoValido = nuevoEstado.equals("PENDIENTE") || nuevoEstado.equals("EN_PROCESO")
-                || nuevoEstado.equals("RESUELTA") || nuevoEstado.equals("RECHAZADA");
-        if (!estadoValido) {
-            throw new IllegalArgumentException("Estado inválido: " + nuevoEstado);
-        }
+        Estado nuevoEstado = Estado.valueOf(leer("Nuevo estado (PENDIENTE/EN_PROCESO/RESUELTA/RECHAZADA): ").toUpperCase());
 
         EntityManager em = emf.createEntityManager();
         try {
@@ -155,7 +150,7 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Solicitud> query = em.createQuery(jpql, Solicitud.class);
-            if (!estado.isEmpty()) query.setParameter("estado", estado);
+            if (!estado.isEmpty()) query.setParameter("estado", Estado.valueOf(estado));
             if (!tipo.isEmpty()) query.setParameter("tipo", tipo);
 
             List<Solicitud> solicitudes = query.getResultList();

@@ -18,7 +18,8 @@ public class Solicitud {
     public String tipo;       // CERTIFICADO, EQUIVALENCIA, BAJA_MATERIA, OTRO
     public String prioridad;  // BAJA, MEDIA, ALTA
     public String descripcion;
-    public String estado = "PENDIENTE";     // PENDIENTE, EN_PROCESO, RESUELTA, RECHAZADA
+    @Enumerated(EnumType.STRING)
+    public Estado estado = Estado.PENDIENTE;
 
     public Solicitud() {}
 
