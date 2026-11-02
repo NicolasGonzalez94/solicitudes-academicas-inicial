@@ -109,7 +109,7 @@ public class Main {
             if (solicitud == null) {
                 throw new IllegalArgumentException("No existe esa solicitud");
             }
-            solicitud.estado = nuevoEstado;
+            solicitud.setEstado(nuevoEstado);
             em.getTransaction().commit();
             System.out.println("Estado actualizado.");
         } finally {
@@ -131,7 +131,7 @@ public class Main {
             if (solicitud == null || responsable == null) {
                 throw new IllegalArgumentException("Solicitud o responsable inexistente");
             }
-            solicitud.responsable = responsable;
+            solicitud.setResponsable(responsable);
             em.getTransaction().commit();
             System.out.println("Responsable asignado.");
         } finally {

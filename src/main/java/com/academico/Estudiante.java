@@ -7,17 +7,18 @@ public class Estudiante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String nombre;
+    private Long id;
+    private String nombre;
 
     public Estudiante() {}
 
-    public Estudiante(String n) {
-        nombre = n;
+    public Estudiante(String nombre) {
+        this.nombre = nombre;
     }
 
+    public Long getId() { return id; }
+    public String getNombre() { return nombre; }
+
     @Override
-    public String toString() {
-        return id + " - " + nombre;
-    }
+    public String toString() { return id + " - " + nombre; }
 }
