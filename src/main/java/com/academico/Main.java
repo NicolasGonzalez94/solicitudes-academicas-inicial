@@ -18,18 +18,7 @@ public class Main {
         Server server = Server.createWebServer("-web", "-webPort", "8080").start();
         System.out.println("H2 Console: " + server.getURL());
 
-        // datos de prueba
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(new Estudiante("Ana Pérez"));
-            em.persist(new Estudiante("Juan Gómez"));
-            em.persist(new Responsable("Laura Díaz", "Alumnado"));
-            em.persist(new Responsable("Carlos Ruiz", "Secretaría"));
-            em.getTransaction().commit();
-        } finally {
-            cerrar(em);
-        }
+        cargarDatosIniciales();
 
         int opcion;
         do {
@@ -40,8 +29,7 @@ public class Main {
             System.out.println("4. Buscar / filtrar solicitudes");
             System.out.println("5. Reporte");
             System.out.println("0. Salir");
-            System.out.print("Opcion: ");
-            opcion = Integer.parseInt(in.nextLine().trim());
+            opcion = Integer.parseInt(leer("Opcion: "));
 
             try {
                 switch (opcion) {
@@ -59,6 +47,27 @@ public class Main {
         emf.close();
     }
 
+    // Datos de prueba para no tener que cargarlos a mano
+    static void cargarDatosIniciales() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(new Estudiante("Ana Pérez"));
+            em.persist(new Estudiante("Juan Gómez"));
+            em.persist(new Responsable("Laura Díaz", "Alumnado"));
+            em.persist(new Responsable("Carlos Ruiz", "Secretaría"));
+            em.getTransaction().commit();
+        } finally {
+            cerrar(em);
+        }
+    }
+
+    // Muestra el mensaje y devuelve la línea ingresada sin espacios en los extremos
+    static String leer(String mensaje) {
+        System.out.print(mensaje);
+        return in.nextLine().trim();
+    }
+
     // Cierra el EntityManager y deshace la transacción si quedó abierta (también ante excepciones)
     static void cerrar(EntityManager em) {
         if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -72,14 +81,10 @@ public class Main {
             for (Estudiante e : estudiantes) {
                 System.out.println(e.id + " - " + e.nombre);
             }
-            System.out.print("ID estudiante: ");
-            Long idEstudiante = Long.parseLong(in.nextLine().trim());
-            System.out.print("Tipo (CERTIFICADO/EQUIVALENCIA/BAJA_MATERIA/OTRO): ");
-            String tipo = in.nextLine().trim().toUpperCase();
-            System.out.print("Prioridad (BAJA/MEDIA/ALTA): ");
-            String prioridad = in.nextLine().trim().toUpperCase();
-            System.out.print("Descripción: ");
-            String descripcion = in.nextLine().trim();
+            Long idEstudiante = Long.parseLong(leer("ID estudiante: "));
+            String tipo = leer("Tipo (CERTIFICADO/EQUIVALENCIA/BAJA_MATERIA/OTRO): ").toUpperCase();
+            String prioridad = leer("Prioridad (BAJA/MEDIA/ALTA): ").toUpperCase();
+            String descripcion = leer("Descripción: ");
 
             em.getTransaction().begin();
             Estudiante estudiante = em.find(Estudiante.class, idEstudiante);
@@ -96,10 +101,8 @@ public class Main {
     }
 
     static void cambiarEstado() {
-        System.out.print("ID solicitud: ");
-        Long idSolicitud = Long.parseLong(in.nextLine().trim());
-        System.out.print("Nuevo estado (PENDIENTE/EN_PROCESO/RESUELTA/RECHAZADA): ");
-        String nuevoEstado = in.nextLine().trim().toUpperCase();
+        Long idSolicitud = Long.parseLong(leer("ID solicitud: "));
+        String nuevoEstado = leer("Nuevo estado (PENDIENTE/EN_PROCESO/RESUELTA/RECHAZADA): ").toUpperCase();
         boolean estadoValido = nuevoEstado.equals("PENDIENTE") || nuevoEstado.equals("EN_PROCESO")
                 || nuevoEstado.equals("RESUELTA") || nuevoEstado.equals("RECHAZADA");
         if (!estadoValido) {
@@ -128,10 +131,8 @@ public class Main {
             for (Responsable r : responsables) {
                 System.out.println(r.id + " - " + r.nombre + " (" + r.area + ")");
             }
-            System.out.print("ID solicitud: ");
-            Long idSolicitud = Long.parseLong(in.nextLine().trim());
-            System.out.print("ID responsable: ");
-            Long idResponsable = Long.parseLong(in.nextLine().trim());
+            Long idSolicitud = Long.parseLong(leer("ID solicitud: "));
+            Long idResponsable = Long.parseLong(leer("ID responsable: "));
 
             em.getTransaction().begin();
             Solicitud solicitud = em.find(Solicitud.class, idSolicitud);
@@ -148,10 +149,8 @@ public class Main {
     }
 
     static void filtrar() {
-        System.out.print("Estado (Enter = todos): ");
-        String estado = in.nextLine().trim().toUpperCase();
-        System.out.print("Tipo (Enter = todos): ");
-        String tipo = in.nextLine().trim().toUpperCase();
+        String estado = leer("Estado (Enter = todos): ").toUpperCase();
+        String tipo = leer("Tipo (Enter = todos): ").toUpperCase();
 
         String jpql = "from Solicitud s where 1=1";
         if (!estado.isEmpty()) jpql = jpql + " and s.estado = '" + estado + "'";
