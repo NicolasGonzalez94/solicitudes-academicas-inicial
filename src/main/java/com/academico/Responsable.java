@@ -17,4 +17,9 @@ public class Responsable {
         nombre = n;
         area = a;
     }
+
+    @Override
+    public String toString() {
+        return id + " - " + nombre + " (" + area + ")";
+    }
 }

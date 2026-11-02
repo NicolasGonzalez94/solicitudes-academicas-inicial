@@ -15,3 +15,9 @@ public class Estudiante {
     public Estudiante(String n) {
         nombre = n;
     }
+
+    @Override
+    public String toString() {
+        return id + " - " + nombre;
+    }
+}

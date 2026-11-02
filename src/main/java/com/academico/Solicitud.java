@@ -21,4 +21,18 @@ public class Solicitud {
     public String estado;     // PENDIENTE, EN_PROCESO, RESUELTA, RECHAZADA
 
     public Solicitud() {}
+
+    @Override
+    public String toString() {
+        String nombreResponsable;
+        if (responsable == null) {
+            nombreResponsable = "sin asignar";
+        } else {
+            nombreResponsable = responsable.nombre;
+        }
+        return "#" + id + " | " + tipo + " | " + prioridad + " | " + estado
+                + " | " + estudiante.nombre
+                + " | Resp: " + nombreResponsable
+                + " | " + descripcion;
+    }
 }
